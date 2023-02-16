@@ -1,0 +1,26 @@
+version: '3'
+services:
+  # MySQL service for data warehouse
+  mysql:
+    image: mysql:latest
+    ports:
+      - 8083:3306
+    volumes:
+      - ./data/db/mysql:/var/lib/mysql:rw
+      - ./config/config-mysql.conf:/etc/mysql/conf.d/config-file.cnf
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: root
+
+  # Mongo Service for data lake
+  mongo:
+    image: mongo:latest
+    container_name: 'mongodb'
+    environment:
+      - MONGO_INITDB_DATABASE=init_db
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - ./data/db/mongo:/data/db/mongo:rw
+    ports:
+      - '27017-27019:27017-27019'
